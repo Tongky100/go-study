@@ -77,5 +77,3 @@ func climbStairs5(n int) int {
 	}
 	return f1
 }
-
-//测试提交内容
