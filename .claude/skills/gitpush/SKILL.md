@@ -26,7 +26,19 @@ disable-model-invocation: true
 使用生成的提交信息执行 `git commit -m "提交信息"`
 
 ### 5. 推送到远程
-执行 `git push` 推送到远程仓库。如果当前分支没有上游跟踪，执行 `git push -u origin master` 设置上游并推送。
+依次推送到多个远程仓库：
+
+1. **推送到 origin（Gitee）**：
+   ```bash
+   git push origin master
+   ```
+
+2. **推送到 origin-gh（GitHub）**：
+   ```bash
+   git push origin-gh master
+   ```
+
+如果某个远程推送失败，记录错误但继续推送其他远程。如果远程没有上游跟踪，使用 `-u` 参数设置上游。
 
 ## 输出格式
 
@@ -36,7 +48,9 @@ disable-model-invocation: true
 - 提交信息: xxx
 - 变更文件: x 个新增, x 个修改, x 个删除
 - 耗时: x 秒
-- 远程推送: 已完成
+- 远程推送:
+  - ✓ origin (Gitee): 推送成功
+  - ✓ origin-gh (GitHub): 推送成功
 
 
 ### 失败时
@@ -48,7 +62,16 @@ disable-model-invocation: true
 - 无可提交的内容（工作区干净）
 - 未连接到远程仓库
 - 远程仓库拒绝推送（权限问题或冲突）
-- 网络连接失败
+- 网络连接失败（GitHub 可能需要 SSH 或代理）
+
+### 部分成功时（一个远程成功，一个失败）
+
+⚠ 提交成功，但部分远程推送失败
+- 提交信息: xxx
+- 变更文件: x 个新增, x 个修改, x 个删除
+- 远程推送:
+  - ✓ origin (Gitee): 推送成功
+  - ✗ origin-gh (GitHub): [失败原因]
 
 
 ### 无需提交时
@@ -59,6 +82,8 @@ disable-model-invocation: true
 
 1. 始终使用 `git add -A` 暂存所有更改
 2. 提交信息使用中文，简洁明了
-3. 推送到当前分支的远程对应分支
-4. 如果推送失败，尝试显示具体的 git 错误信息
-5. 记录每个步骤的耗时，最后汇总报告
+3. **双远程推送**：默认推送到 `origin`（Gitee）和 `origin-gh`（GitHub）两个远程
+4. 如果某个远程推送失败（如 GitHub 网络问题），继续推送另一个远程
+5. GitHub 推送失败时，提示用户可能需要配置 SSH 密钥或使用代理
+6. 如果推送失败，尝试显示具体的 git 错误信息
+7. 记录每个步骤的耗时，最后汇总报告
