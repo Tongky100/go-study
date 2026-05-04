@@ -18,3 +18,37 @@ func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
 		return l
 	}
 }
+
+//解法2 使用二叉树后序遍历求解 对解法1做结构上的优化
+func lowestCommonAncestor2(root, p, q *TreeNode) *TreeNode {
+	if root == nil || root == p || root == q {
+		return root //base case 树遍历完或找到p或q了
+	}
+	//递归在左右子树中查找
+	l := lowestCommonAncestor(root.Left, p, q)
+	r := lowestCommonAncestor(root.Right, p, q)
+	if l != nil && r != nil {
+		return root
+	}
+	if l != nil {
+		return l
+	}
+	return r
+}
+
+//解法3 使用二叉树后序遍历求解 对解法1做结构上的优化 最慢
+func lowestCommonAncestor3(root, p, q *TreeNode) *TreeNode {
+	if root == nil || root == p || root == q {
+		return root //base case 树遍历完或找到p或q了
+	}
+	//递归在左右子树中查找
+	l := lowestCommonAncestor(root.Left, p, q)
+	r := lowestCommonAncestor(root.Right, p, q)
+	if l == nil {
+		return r
+	}
+	if r == nil {
+		return l
+	}
+	return root
+}
